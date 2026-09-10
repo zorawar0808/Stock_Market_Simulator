@@ -1,0 +1,57 @@
+/*
+  Design tokens (spec sections 63-71): near-black charcoal, restrained
+  semantic color, no gradients/glow/glassmorphism, tabular numbers for
+  financial values. Each app imports this file directly so there's one
+  source of truth for the palette across participant/admin/big-screen.
+*/
+:root {
+  --bg-base: #0b0d10;
+  --bg-panel: #14171c;
+  --bg-panel-raised: #191d23;
+  --border: #262b33;
+  --border-strong: #34394320;
+
+  --text-primary: #e6e9ed;
+  --text-secondary: #8a93a1;
+  --text-muted: #5b6270;
+
+  --positive: #2fbf71;
+  --negative: #e5484d;
+  --warning: #e8a33d;
+  --accent: #4c8bf5;
+
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+  --font-mono: "SFMono-Regular", ui-monospace, Menlo, Consolas, monospace;
+
+  --radius-sm: 3px;
+  --radius-md: 5px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.tabular-num {
+  font-variant-numeric: tabular-nums;
+  font-family: var(--font-mono);
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+button:focus-visible,
+input:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
