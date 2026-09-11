@@ -38,3 +38,5 @@ build/
 # Editor
 .vscode/
 .idea/
+.vercel
+.env*

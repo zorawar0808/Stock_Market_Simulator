@@ -16,11 +16,11 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=Path(__file__).resolve().parents[1] / ".env", extra="ignore")
 
     # Database
-    database_url: str = "postgresql+asyncpg://esummit:esummit@localhost:5432/esummit"
-    database_url_sync: str = "postgresql+psycopg2://esummit:esummit@localhost:5432/esummit"
+    database_url: str
+    database_url_sync: str
 
     # Auth
-    secret_key: str = "dev-secret-change-me"
+    secret_key: str
     algorithm: str = "HS256"
     access_token_expire_minutes: int = 720
     refresh_token_expire_days: int = 7

@@ -1,4 +1,3 @@
-import asyncio
 import random
 from collections import defaultdict
 from datetime import datetime, timezone
@@ -22,26 +21,26 @@ from app.models.trade import Trade
 from market_engine.pricing.engine import OrderFlow, compute_next_price
 
 
-async def run_price_engine_loop(interval_seconds: int = 4) -> None:
-    while True:
-        try:
-            await run_price_tick()
-        except asyncio.CancelledError:
-            raise
-        except Exception as exc:
-            print(f"[MARKET ENGINE] Tick error: {exc}")
-
-        await asyncio.sleep(interval_seconds)
-
-
-async def run_price_tick() -> None:
+async def run_price_tick(expected_sequence: int | None = None) -> None:
     async with AsyncSessionLocal() as db:
+        # Lock the market state FIRST so duplicate/overlapping queue
+        # deliveries cannot execute the same tick.
         state_result = await db.execute(
-            select(MarketStateRow).where(MarketStateRow.id == 1)
+            select(MarketStateRow)
+            .where(MarketStateRow.id == 1)
+            .with_for_update()
         )
         state = state_result.scalar_one_or_none()
 
         if state is None or state.state != MarketState.LIVE:
+            return
+
+        # Vercel Queues is at-least-once. A redelivered message carrying
+        # an old sequence must not create another price tick.
+        if (
+            expected_sequence is not None
+            and state.last_sequence_number != expected_sequence
+        ):
             return
 
         latest_snapshot_result = await db.execute(
@@ -111,13 +110,6 @@ async def run_price_tick() -> None:
             select(Company).with_for_update()
         )
         companies = companies_result.scalars().all()
-
-        state_result = await db.execute(
-            select(MarketStateRow)
-            .where(MarketStateRow.id == 1)
-            .with_for_update()
-        )
-        state = state_result.scalar_one()
 
         state.last_sequence_number += 1
         sequence_number = state.last_sequence_number

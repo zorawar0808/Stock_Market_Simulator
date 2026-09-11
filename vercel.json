@@ -1,0 +1,20 @@
+{
+  "services": {
+    "backend": {
+      "root": "backend/",
+      "entrypoint": "app.main:app"
+    },
+    "participant": {
+      "root": "apps/participant/",
+      "framework": "vite"
+    },
+    "admin": {
+      "root": "apps/admin/",
+      "framework": "vite"
+    },
+    "big-screen": {
+      "root": "apps/big-screen/",
+      "framework": "vite"
+    }
+  }
+}
