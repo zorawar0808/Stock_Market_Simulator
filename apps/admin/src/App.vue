@@ -3,7 +3,7 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import './tokens.css'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+const API_URL = import.meta.env.VITE_API_URL || ''
 
 const accessToken = ref(localStorage.getItem('esummit_admin_token') || '')
 const isAuthenticated = computed(() => !!accessToken.value)

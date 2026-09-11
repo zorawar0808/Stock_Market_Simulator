@@ -2,8 +2,8 @@
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import './tokens.css'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
-const WS_URL = import.meta.env.VITE_WS_URL || 'ws://localhost:8000'
+const API_URL = import.meta.env.VITE_API_URL || ''
+const WS_URL = import.meta.env.VITE_WS_URL || `${location.protocol === 'https:' ? 'wss:' : 'ws:'}//${location.host}`
 
 const token = ref(localStorage.getItem('esummit_token') || '')
 
