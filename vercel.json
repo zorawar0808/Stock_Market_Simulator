@@ -16,5 +16,37 @@
       "root": "apps/big-screen/",
       "framework": "vite"
     }
-  }
+  },
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": {
+        "service": "backend"
+      }
+    },
+    {
+      "source": "/ws/(.*)",
+      "destination": {
+        "service": "backend"
+      }
+    },
+    {
+      "source": "/admin/(.*)",
+      "destination": {
+        "service": "admin"
+      }
+    },
+    {
+      "source": "/big-screen/(.*)",
+      "destination": {
+        "service": "big-screen"
+      }
+    },
+    {
+      "source": "/(.*)",
+      "destination": {
+        "service": "participant"
+      }
+    }
+  ]
 }
