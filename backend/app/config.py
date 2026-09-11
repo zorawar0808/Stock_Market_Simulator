@@ -19,6 +19,15 @@ class Settings(BaseSettings):
     database_url: str
     database_url_sync: str
 
+    @property
+    def async_database_url(self) -> str:
+        url = self.database_url
+        if url.startswith("postgres://"):
+            url = "postgresql://" + url[len("postgres://"):]
+        if url.startswith("postgresql://"):
+            url = "postgresql+asyncpg://" + url[len("postgresql://"):]
+        return url
+
     # Auth
     secret_key: str
     algorithm: str = "HS256"
